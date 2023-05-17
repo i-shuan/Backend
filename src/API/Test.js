@@ -1,18 +1,26 @@
 import { parentPort } from 'worker_threads';
+import axios from 'axios';
 
 parentPort.on('message', async (message) => {
   console.log('Received message:', message);
 
   try {
-    // 在这里执行您的逻辑，根据需要进行计算或其他操作
+    // Convert the URL string back to a URL object
+    const url = new URL(message.url);
 
-    // 假设逻辑完成后，将结果作为消息发送回主线程
-    const result = 'Hello from the worker thread!';
-    parentPort.postMessage(result);
+    // Use axios to make a GET request with params
+    const response = await axios.get(
+        url.toString(), { 
+            params: message.body 
+        }
+    );
+
+    // Send the result back to the main thread
+    parentPort.postMessage(response.data);
   } catch (error) {
     console.error('Error:', error);
 
-    // 发送错误消息回主线程
+    // Send an error message back to the main thread
     parentPort.postMessage({ error: error.message });
   }
 });

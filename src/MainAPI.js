@@ -28,19 +28,25 @@ const router = express.Router();
 // });
 
 router.post('/test', (req, res) => {
-  const worker = new Worker('./Test.js');
-
-  worker.on('message', (message) => {
-    console.log("message", message);
-    if (message.error) {
-      console.error(message.error);
-      res.status(500).json({ message: 'Test Error' });
-    } else {
-      res.json({ message: 'Test Success' });
-    }
+    const worker = new Worker('./Test.js');
+  
+    worker.on('message', (message) => {
+      console.log("message", message);
+      if (message.error) {
+        console.error(message.error);
+        res.status(500).json({ message: 'Test Error' });
+      } else {
+        res.json({ message: 'Test Success' });
+      }
+    });
+  
+    // 先處理URL避免到worker處理時導致url clone問題
+    const url = new URL('https://api.example.com/data');
+  
+    const urlStr = url.toString();
+  
+    // Post the message to the worker
+    worker.postMessage({ url: urlStr, body: req.body });
   });
-
-  worker.postMessage('Hello');
-});
-
+  
 export default router;
