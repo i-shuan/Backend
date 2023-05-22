@@ -1,0 +1,168 @@
+2023-05-12 09:00 - SECS通讯日志 - S1F1: [Header], Sequence: 1
+2023-05-12 09:01 - S1F1
+                    <L[3]
+                        <A[1] "1">
+                        <A[3] "100">
+                        <L[2]
+                            <L[2]
+                                <A[7] "RPTID 1">
+                                <L[2]
+                                    <A[8] "01:26:43">
+                                    <A[13] "Equipment OFF-LINE">
+                            >
+                        >
+                            <L[2]
+                                <A[7] "RPTID 2">
+                                <L[2]
+                                    <A[2] "30">
+                                    <A[2] "10">
+                                >
+                            >
+                    >
+                    >
+                    . 
+
+2023-05-12 10:00 - SECS通訊日誌 - S2F13: [Header], Sequence: 3
+2023-05-12 10:01 - S2F13
+                    <L[3]
+                        <A[1] "2">
+                        <A[3] "200">
+                        <L[2]
+                            <L[2]
+                                <A[7] "RPTID 3">
+                                <L[2]
+                                    <A[8] "02:45:33">
+                                    <A[16] "Equipment PROCESSING">
+                                >
+                            >
+                            <L[2]
+                                <A[7] "RPTID 4">
+                                <L[2]
+                                    <A[2] "50">
+                                    <A[2] "20">
+                                >
+                            >
+                        >
+                    >
+
+2023-05-12 10:30 - SECS通訊日誌 - S2F14 (机台 to Server): [Header], Sequence: 4
+2023-05-12 10:31 - S2F14
+                    <A[4] 0X00>
+
+2023-05-12 11:00 - SECS通訊日誌 - S2F15: [Header], Sequence: 5
+2023-05-12 11:01 - S2F15
+                    <L[3]
+                        <A[1] "3">
+                        <A[3] "300">
+                        <L[2]
+                            <L[2]
+                                <A[7] "RPTID 5">
+                                <L[2]
+                                    <A[8] "03:12:15">
+                                    <A[12] "Equipment IDLE">
+                                >
+                            >
+                            <L[2]
+                                <A[7] "RPTID 6">
+                                <L[2]
+                                    <A[2] "70">
+                                    <A[2] "35">
+                                >
+                            >
+                        >
+                    >
+
+2023-05-12 11:30 - SECS通訊日誌 - S2F16 (机台 to Server): [Header], Sequence: 6
+2023-05-12 11:31 - S2F16
+                    <A[4] 0X00>
+
+2023-05-12 11:32 - SECS通訊日誌 - S7F25 (Server to 机台): [Header], Sequence: 7
+                    <A[4] 0X00>        
+2023-05-12 11:33 - SECS通訊日誌 - S6F11 (Server to 机台): [Header], Sequence: 8
+2023-05-12 11:34 -  <A[4] 0X00>   
+2023-05-12 11:34 - SECS通訊日誌 - S7F26 (机台 to Server): [Header], Sequence: 9
+                    <L[20]
+                        <A[10] "XYFSECVFDA">
+                        <A[12] "ASWERGFHJVDF">
+                        <A[12] "A123DWERTGHF">
+                        <A[5] "FGHTF">
+                        <A[7] "FRTYJNV">
+                        <A[6] "ABCD12">
+                        <A[11] "XYZ1234567">
+                        <A[13] "MNO78901234">
+                        <A[9] "PQRST5678">
+                        <A[8] "UVWX3456">
+                        <A[12] "YZZY12345678">
+                        <A[10] "LMNOPQRSTU">
+                        <A[7] "VWXYZ12">
+                        <A[14] "ABCDEFGHIJKLMN">
+                        <A[8] "OPQRSTUV">
+                        <A[12] "WXYZ12345678">
+                        <A[11] "ABCDEFGHIJK">
+                        <A[9] "LMNOPQRST">
+                        <A[10] "UVWXYZ1234">
+                        <A[11] "ABCDEFGHIJK">
+                      >
+
+2023-05-12 15:00 - SECS通訊日誌 - S2F13: [Header], Sequence: 3
+2023-05-12 15:01 - S2F13
+                    <L[3]
+                        <A[1] "2">
+                        <A[3] "200">
+                        <L[2]
+                            <L[2]
+                                <A[7] "RPTID 3">
+                                <L[2]
+                                    <A[8] "02:45:33">
+                                    <A[16] "Equipment PROCESSING">
+                                >
+                            >
+                            <L[2]
+                                <A[7] "RPTID 4">
+                                <L[2]
+                                    <A[2] "50">
+                                    <A[2] "20">
+                                >
+                            >
+                        >
+                    >
+
+2023-05-12 15:30 - SECS通訊日誌 - S2F14 (机台 to Server): [Header], Sequence: 4
+2023-05-12 15:31 - S2F14
+                    <A[4] 0X00>
+
+2023-05-12 17:32 - SECS通訊日誌 - S7F13 (Server to 机台): [Header], Sequence: 7
+2023-05-12 17:34 - SECS通訊日誌 - S2F14 (机台 to Server): [Header], Sequence: 4
+2023-05-12 17:35 - S2F14
+                    <A[4] 0X00>
+2023-05-12 17:33 -  S7F13
+                        <A[4] 0X00>        
+  
+2023-05-12 17:34 - SECS通訊日誌 - S7F14 (机台 to Server): [Header], Sequence: 9
+2023-05-12 17:34 - SECS通訊日誌 - S2F14 (机台 to Server): [Header], Sequence: 4
+2023-05-12 17:35 - S2F14
+                    <A[4] 0X00>
+2023-05-12 17:35 - S7F14 
+                    <L[20]
+                        <A[10] "XYFSECVFDA">
+                        <A[12] "ASWERGFHJVDF">
+                        <A[12] "A123DWERTGHF">
+                        <A[5] "FGHTF">
+                        <A[7] "FRTYJNV">
+                        <A[6] "ABCD12">
+                        <A[11] "XYZ1234567">
+                        <A[13] "MNO78901234">
+                        <A[9] "PQRST5678">
+                        <A[8] "UVWX3456">
+                        <A[12] "YZZY12345678">
+                        <A[10] "LMNOPQRSTU">
+                        <A[7] "VWXYZ12">
+                        <A[14] "ABCDEFGHIJKLMN">
+                        <A[8] "OPQRSTUV">
+                        <A[12] "WXYZ12345678">
+                        <A[11] "ABCDEFGHIJK">
+                        <A[9] "LMNOPQRST">
+                        <A[10] "UVWXYZ1234">
+                        <A[11] "ABCDEFGHIJK">
+                      >
+

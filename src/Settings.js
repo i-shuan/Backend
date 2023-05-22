@@ -1,10 +1,12 @@
+// Settings.js
 import express from 'express';
 import cors from 'cors';
 
-const app = express();
+const createApp = () => {
+    const app = express();
+    app.use(cors({ origin: 'http://localhost:3000' }));
+    app.use(express.json());
+    return app;
+};
 
-app.use(cors({ origin: 'http://localhost:3000' }));
-
-app.use(express.json());
-
-export default app;
+export default createApp;
