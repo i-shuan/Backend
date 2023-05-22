@@ -28,16 +28,28 @@ api.post('/test', async (req, res) => {
 
   if (fs.existsSync(filePath)) {
     console.log("__________________");
-      res.download(filePath);
+    res.download(filePath);
   } else {
-      try {
-          await ProcessFile();
-          console.log("filePath", filePath);
+    try {
+
+      if (filename.endsWith('.zip')) {
+        try {
+          await ProcessZipFile(filename);
           res.download(filePath);
-      } catch (error) {
+        } catch (error) {
           res.status(500).send(`Error processing query: ${error}`);
+        }
+      } 
+      else{
+        await ProcessFile(filename);
+        console.log("filePath", filePath);
+        res.download(filePath);
       }
+    } catch (error) {
+      res.status(500).send(`Error processing query: ${error}`);
+    }
   }
 });
+
 
 export default api;
