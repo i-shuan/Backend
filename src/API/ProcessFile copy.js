@@ -6,7 +6,6 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { Transform } from 'stream';
 import split2 from 'split2';
-import iconv from 'iconv-lite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -51,22 +50,38 @@ const processFile = async (filename) => {
 
     const filePath = path.join(__dirname, '../DownloadedFiles', path.basename(url));
     const writer = fs.createWriteStream(filePath);
-    // 使用iconv-lite來進行BIG5解碼和UTF-8編碼
-    const decodeStream = iconv.decodeStream('big5');
-    const encodeStream = iconv.encodeStream('utf8');
 
-    response.data
-        .pipe(decodeStream) // 解码BIG5
-        .pipe(split2())
-        .pipe(new Transform({
+    response.data.pipe(split2()).pipe(new Transform({
         transform(chunk, encoding, callback) {
             const maskedLine = maskLine(chunk.toString());
             this.push(maskedLine);
             callback();
-        }}))
-        .pipe(encodeStream) // 编码成UTF-8
-        .pipe(writer)
+        }
+    })).pipe(writer);
 
+
+    // /* Local Download File */
+    // const filePath = path.resolve(__dirname, '../Log/TAPSECS.log');
+    // const reader = fs.createReadStream(filePath);
+    
+    // // Change the path to your desired directory
+    // const outputFilePath = path.resolve(__dirname, '../DownloadedFiles', 'TAPSECS.log');
+    
+    // // Make sure the directory exists
+    // fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
+    
+    // const writer = fs.createWriteStream(outputFilePath);
+ 
+    // console.log(filePath)
+    // console.log(outputFilePath)
+
+    // reader.pipe(split2()).pipe(new Transform({
+    //     transform(chunk, encoding, callback) {
+    //         const maskedLine = maskLine(chunk.toString());
+    //         this.push(maskedLine);
+    //         callback();
+    //     }
+    // })).pipe(writer);
 
     return new Promise((resolve, reject) => {
         writer.on('finish', () => resolve({ status: 'success', message: 'File processed successfully' }));
