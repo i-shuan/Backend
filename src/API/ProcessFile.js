@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { Transform } from 'stream';
 import split2 from 'split2';
 import iconv from 'iconv-lite';
+import DetectFileCode from './DetectFileCode';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -34,6 +35,7 @@ const maskLine = (line) => {
     }
 };
 
+
 const processFile = async (filename) => {
    
    
@@ -49,21 +51,23 @@ const processFile = async (filename) => {
         }
     });
 
+    const decodedStream = await detectFileCode(response.data);
+
     const filePath = path.join(__dirname, '../DownloadedFiles', path.basename(url));
     const writer = fs.createWriteStream(filePath);
-    // 使用iconv-lite來進行BIG5解碼和UTF-8編碼
-    const decodeStream = iconv.decodeStream('big5');
+
+    // 使用iconv-lite来进行UTF-8编码
     const encodeStream = iconv.encodeStream('utf8');
 
-    response.data
-        .pipe(decodeStream) // 解码BIG5
+    decodedStream
         .pipe(split2())
         .pipe(new Transform({
-        transform(chunk, encoding, callback) {
-            const maskedLine = maskLine(chunk.toString());
-            this.push(maskedLine);
-            callback();
-        }}))
+            transform(chunk, encoding, callback) {
+                const maskedLine = maskLine(chunk.toString());
+                this.push(maskedLine);
+                callback();
+            }
+        }))
         .pipe(encodeStream) // 编码成UTF-8
         .pipe(writer)
 
