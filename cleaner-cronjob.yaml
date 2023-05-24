@@ -1,0 +1,18 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cleaner
+spec:
+  schedule: "0 1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cleaner
+            image: your-node-app-image
+            args:
+            - /bin/sh
+            - -c
+            - npm run clean
+          restartPolicy: OnFailure
