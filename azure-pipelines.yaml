@@ -1,0 +1,35 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+/*用于安装 Node.js*/
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+  displayName: 'Install Node.js'
+/*第一個腳本任務執行 npm install 和 npm run build。*/
+- script: |
+    npm install
+    npm run build
+  displayName: 'npm install and build'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'MyDockerRegistry'
+    repository: 'my-app'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: '$(Build.BuildId)'
+
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'MyKubeConnection'
+    namespace: 'default'
+    command: 'apply'
+    useConfigurationFile: true
+    configuration: 'cleaner-cronjob.yaml'
+  displayName: 'Deploy CronJob to Kubernetes'
