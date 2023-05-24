@@ -8,6 +8,7 @@ import { Transform } from 'stream';
 import split2 from 'split2';
 import iconv from 'iconv-lite';
 import DetectFileCode from './DetectFileCode';
+import getStream from 'get-stream';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -38,9 +39,7 @@ const maskLine = (line) => {
 
 const processFile = async (filename) => {
    
-   
     /* Server download File */
-
     const url = `http://example.com/`;
     const response = await axios({
         method: 'POST',
@@ -51,13 +50,15 @@ const processFile = async (filename) => {
         }
     });
 
-    const decodedStream = await detectFileCode(response.data);
+    /* Add */
+    const fileBuffer = await getStream.buffer(response.data);
+    const detectedEncoding = await DetectFileCode(fileBuffer);
+
+    const decodedStream = iconv.decodeStream(detectedEncoding);
+    const encodeStream = iconv.encodeStream('utf8');
 
     const filePath = path.join(__dirname, '../DownloadedFiles', path.basename(url));
     const writer = fs.createWriteStream(filePath);
-
-    // 使用iconv-lite来进行UTF-8编码
-    const encodeStream = iconv.encodeStream('utf8');
 
     decodedStream
         .pipe(split2())
@@ -69,8 +70,7 @@ const processFile = async (filename) => {
             }
         }))
         .pipe(encodeStream) // 编码成UTF-8
-        .pipe(writer)
-
+        .pipe(writer);
 
     return new Promise((resolve, reject) => {
         writer.on('finish', () => resolve({ status: 'success', message: 'File processed successfully' }));
