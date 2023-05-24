@@ -37,35 +37,45 @@ const maskLine = (line) => {
     }
 };
 
+// 定義一個將檔案壓縮為zip的函數，需要兩個參數，一個是要被壓縮的檔案路徑，另一個是壓縮後的輸出名稱
 const archiveFiletoZip = (filePath, outputName) => {
-
+    // 返回一個新的 Promise
     return new Promise((resolve, reject) => {
+        // 建立一個寫入流到輸出名稱的位置
         const output = fs.createWriteStream(outputName);
+        // 建立一個新的壓縮物件，壓縮等級設定為9
         const archive = archiver('zip', {
             zlib: { level: 9 } // Sets the compression level.
         });
 
+        // 當寫入流關閉時，打印出壓縮後的總位元組並解決 Promise
         output.on('close', () => {
             console.log(archive.pointer() + ' total bytes');
             console.log('archiver has been finalized and the output file descriptor has closed.');
             resolve({ status: 'success', message: 'File zipped successfully' });
         });
 
+        // 當壓縮出現錯誤時，拒絕 Promise
         archive.on('error', (err) => {
             reject(err);
         });
 
-        // pipe archive data to the file
+        // 將壓縮資料導入到寫入流
         archive.pipe(output);
 
-        // append a file
-        /*第一个参数filePath是你想要添加到压缩文件中的文件的完整路径 
-        第二個通常是你要添加的文件的文件名*/
+        // 添加一個檔案到壓縮檔中
+        /* 第一個參數filePath是你想要添加到壓縮檔中的檔案的完整路徑 
+        第二個參數通常是你要添加的檔案的檔案名 */
+
+        /*
+當你在調用 archive.file() 函數時，你只需提供要壓縮的文件的路徑，archiver 庫會創建一個讀取流去讀取這個文件，然後進行壓縮。 */
         archive.file(filePath, { name: path.basename(filePath) });
         
+        // 完成壓縮操作
         archive.finalize();
     });
 };
+
 
 const processFile = async (filename) => {
    
