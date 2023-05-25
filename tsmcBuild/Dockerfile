@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8080
 
 # 在容器中運行你的 app
-CMD [ "node", "src/server.js" ]
+CMD [ "npm", "start" ]
