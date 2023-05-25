@@ -1,25 +1,20 @@
-# 使用一个基础镜像作为起点
-FROM node:14.15.0
+# 從官方 Node.js 基礎映像檔建立
+FROM node:14
 
-# 设置 npm 镜像源为淘宝镜像
-#npm config set registry <registry url>
+# 建立 app 目錄
+WORKDIR /usr/src/app
 
-# 设置工作目录
-WORKDIR /app
+# 把 package.json 和 package-lock.json 複製到工作目錄
+COPY package*.json ./
 
-# 复制 package.json 和 package-lock.json 到镜像中
-COPY package.json .
-COPY package-lock.json .
+# 安裝 app 依賴項
+RUN npm install
 
+# 複製應用程式原始碼到工作目錄
+COPY . .
 
-# 安装项目依赖
-RUN npm install --production
-
-# 将应用程序文件复制到镜像中
-COPY src ./src
-
-# 暴露应用程序需要的端口
+# 你的 app 監聽的埠
 EXPOSE 8080
 
-# 定义启动命令
-CMD [ "npm", "start" ]
+# 在容器中運行你的 app
+CMD [ "node", "src/server.js" ]

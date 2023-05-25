@@ -2,12 +2,13 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "build":"",
     "test": "echo \"Error: no test specified\" && exit 1", 
-    "clean": "node ./src/tasks/CleanDownloads.js"
+    "clean": "node ./src/tasks/CleanDownloads.js",
+    "start": "node src/server.js"
     
   },
   "author": "",
