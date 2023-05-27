@@ -1,20 +1,17 @@
-# 從官方 Node.js 基礎映像檔建立
+# 使用官方 Node.js 14 作为基础镜像
 FROM node:14
 
-# 建立 app 目錄
-WORKDIR /usr/src/app
+# 设置工作目录
+WORKDIR /opt/node
 
-# 把 package.json 和 package-lock.json 複製到工作目錄
-COPY package*.json ./
+# 将 package.json 和 package-lock.json 文件复制到工作目录
+COPY  ./ .
 
-# 安裝 app 依賴項
+# 安装应用程序的所有依赖
 RUN npm install
 
-# 複製應用程式原始碼到工作目錄
-COPY . .
+# 设置 npm registry
+#RUN npm config set registry https://your-registry-url/
 
-# 你的 app 監聽的埠
-EXPOSE 8080
-
-# 在容器中運行你的 app
-CMD [ "npm", "start" ]
+# 启动 Node.js 应用程序
+CMD [ "npm", "run", "start" ]

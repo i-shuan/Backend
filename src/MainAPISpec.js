@@ -3,52 +3,63 @@ import express from 'express';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
-import ProcessFile from './API/ProcessFile.js';
+import k8s from '@kubernetes/client-node';
+
+/*創建 Kubernetes 配置和 API 客戶端 */
+// const kc = new k8s.KubeConfig();
+// const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+// kc.loadFromDefault();
+
+/* API Files */
+import ProcessFile from './API/ProcessFileToZIP.js';
 import ProcessTest from './API/ProcessTest.js'
+import MaskDownloadFile from './API/MaskDownloadFile.js'
+
 
 const api = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 
-api.get('/file/:id', async (req, res) => {
-    const fileId = req.params.id;
-    
-    try {
-        const result = await ProcessFile(fileId);
-        res.send(result);
-    } catch (error) {
-        res.status(500).send(`Error processing file: ${error}`);
-    }
+/*創建一個新的路由來獲取 Kubernetes 命名空間列表 */
+api.get('/k8s/namespaces', async (req, res) => {
+  try {
+      const response = await k8sApi.listNamespace();
+      res.json(response.body);
+  } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+  }
 });
 
 api.post('/test', async (req, res) => {
+ 
   const { filename } = req.body;
-  const filePath = path.resolve(__dirname, './DownloadedFiles', filename);
-
-  if (fs.existsSync(filePath)) {
-    console.log("__________________");
-    res.download(filePath);
-  } else {
-    try {
-
-      if (filename.endsWith('.zip')) {
-        try {
-          await ProcessZipFile(filename);
-          res.download(filePath);
-        } catch (error) {
-          res.status(500).send(`Error processing query: ${error}`);
-        }
-      } 
-      else{
-        await ProcessFile(filename);
-        console.log("filePath", filePath);
+ 
+  try {
+    if (filename.endsWith('.zip')) {
+      try {
+        await ProcessZipFile(filename);
         res.download(filePath);
+      } catch (error) {
+        res.status(500).send(`Error processing query: ${error}`);
       }
-    } catch (error) {
-      res.status(500).send(`Error processing query: ${error}`);
+    } 
+    else{
+      try {
+        const result = await MaskDownloadFile(filename, res);
+        console.log(result.message);
+      } catch (err) {
+          res.status(500).json({
+              status: 'fail',
+              message: 'File processing failed'
+        });
+      }
     }
+  } catch (error) {
+    res.status(500).send(`Error processing query: ${error}`);
   }
+ 
 });
 
 
