@@ -17,9 +17,6 @@ import MaskDownloadFile from './API/MaskDownloadFile.js'
 
 
 const api = express.Router();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 
 /*創建一個新的路由來獲取 Kubernetes 命名空間列表 */
 api.get('/k8s/namespaces', async (req, res) => {
