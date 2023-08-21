@@ -14,7 +14,7 @@ import k8s from '@kubernetes/client-node';
 import ProcessFile from './API/ProcessFileToZIP.js';
 import ProcessTest from './API/ProcessTest.js'
 import MaskDownloadFile from './API/MaskDownloadFile.js'
-
+import ExtractFileFromZip from './API/ExtractFileFromZip.js';
 
 const api = express.Router();
 
@@ -26,6 +26,20 @@ api.get('/k8s/namespaces', async (req, res) => {
   } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
+  }
+});
+
+api.post('/extractFromZip', async (req, res) => {
+  try {
+      
+      const result = await ExtractFileFromZip(req, res);
+      console.log(result.message);
+      
+  } catch (error) {
+    // res.status(500).json({
+    //   status: 'fail',
+    //   message: 'File processing failed'
+    // });
   }
 });
 
