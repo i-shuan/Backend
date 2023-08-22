@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AdmZip from 'adm-zip';
 
-export async function downloadZipFromURL(url) {
+export const DownloadZipFromURL = async (url) => {
     try {
         const response = await axios.post(url, {}, {
             responseType: 'arraybuffer'
@@ -12,7 +12,7 @@ export async function downloadZipFromURL(url) {
     }
 }
 
-export function scanZipContent(zipBuffer) {
+export const ScanZipContent = async (zipBuffer) => {
     const zip = new AdmZip(zipBuffer);
     const zipEntries = zip.getEntries();
     return zipEntries.map(zipEntry => zipEntry.entryName);

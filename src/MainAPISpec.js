@@ -15,6 +15,9 @@ import ProcessFile from './API/ProcessFileToZIP.js';
 import ProcessTest from './API/ProcessTest.js'
 import MaskDownloadFile from './API/MaskDownloadFile.js'
 import ExtractFileFromZip from './API/ExtractFileFromZip.js';
+import {DownloadZipFromURL, ScanZipContent} from './API/DownloadFile/DownloadZip.js';
+import {DownloadFileAsStream} from './API/DownloadFile/DownloadFileAsStream.js';
+import {MaskFileStream} from './API/DownloadFile/MaskFileStream.js';
 
 const api = express.Router();
 
@@ -29,46 +32,29 @@ api.get('/k8s/namespaces', async (req, res) => {
   }
 });
 
-api.post('/extractFromZip', async (req, res) => {
+app.post('/get-zip-content', async (req, res) => {
   try {
-      
-      const result = await ExtractFileFromZip(req, res);
-      console.log(result.message);
-      
+      const zipUrl = 'https://example.com/path/to/your.zip';
+      const zipBuffer = await DownloadZipFromURL(zipUrl);
+      const fileNames = ScanZipContent(zipBuffer);
+
+      res.json({
+          files: fileNames
+      });
   } catch (error) {
-    // res.status(500).json({
-    //   status: 'fail',
-    //   message: 'File processing failed'
-    // });
+      res.status(500).send('An error occurred while fetching the ZIP content.');
   }
 });
 
 api.post('/test', async (req, res) => {
  
-  const { filename } = req.body;
- 
   try {
-    if (filename.endsWith('.zip')) {
-      try {
-        await ProcessZipFile(filename);
-        res.download(filePath);
-      } catch (error) {
-        res.status(500).send(`Error processing query: ${error}`);
-      }
-    } 
-    else{
-      try {
-        const result = await MaskDownloadFile(filename, res);
-        console.log(result.message);
-      } catch (err) {
-          res.status(500).json({
-              status: 'fail',
-              message: 'File processing failed'
-        });
-      }
-    }
-  } catch (error) {
-    res.status(500).send(`Error processing query: ${error}`);
+    const fileStream = await DownloadFileAsStream(req.params.filename);
+    const maskedStream = MaskFileStream(fileStream);
+    maskedStream.pipe(res);
+  } catch (err) {
+      console.error(err);
+      res.status(500).send({ error: err.message });
   }
  
 });
