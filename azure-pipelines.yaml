@@ -1,0 +1,39 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+#用于安装 Node.js
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+  displayName: 'Install Node.js'
+#第一個腳本任務執行 npm install 和 npm run build。
+- script: |
+    npm install
+    npm run build
+  displayName: 'npm install and build'
+
+#Docker@2 是一个 Azure Pipelines 中的任务（task），用于构建和推送 Docker 镜像到容器注册表
+- task: Docker@2
+  inputs:
+    containerRegistry: 'MyDockerRegistry'
+    repository: 'EAT-Service'
+    command: 'buildAndPush'
+    
+    #Dockerfile: '**/Dockerfile' 表示在構建過程中，會尋找代碼倉庫中任意目錄下名為 Dockerfile 的文件來構建 Docker 鏡像。
+    Dockerfile: '**/Dockerfile'
+    tags: '$(Build.BuildId)'
+
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'MyKubeConnection'
+    namespace: 'default'
+    command: 'apply'
+    useConfigurationFile: true
+    #cleaner-cronjob.yaml 這個文件應該放在你的代碼倉庫的根目錄或者與 azure-pipelines.yaml 文件相同的目錄中。
+    configuration: 'cleaner-cronjob.yaml'
+  displayName: 'Deploy CronJob to Kubernetes'
