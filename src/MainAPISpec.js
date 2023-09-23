@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import k8s from '@kubernetes/client-node';
 
-
 /*創建 Kubernetes 配置和 API 客戶端 */
 // const kc = new k8s.KubeConfig();
 // const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
@@ -22,29 +21,6 @@ import {MaskFileStream} from './API/DownloadFile/MaskFileStream.js';
 
 const api = express.Router();
 
-/**
- * @swagger
- * components:
- *   responses:
- *     SuccessfulResponse:
- *       description: Successful Response
- *       content:
- *         text/plain:
- *           schema:
- *             type: string
- *             example: "dbHostExample"
- *     InternalServerError:
- *       description: Internal Server Error
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               error:
- *                 type: string
- *           example:
- *             error: "An error message"
- */
 
 /*創建一個新的路由來獲取 Kubernetes 命名空間列表 */
 api.get('/k8s/namespaces', async (req, res) => {
@@ -77,6 +53,8 @@ api.post('/get-zip-content', async (req, res) => {
  *   post:
  *     summary: Muti API Flow
  *     description: An API for executing multiple API flows.
+ *     requestBody:
+ *       $ref: "#/components/requestBodies/UserInput"
  *     responses:
  *       200:
  *         $ref: '#/components/responses/SuccessfulResponse'

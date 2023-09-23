@@ -36,7 +36,7 @@ if (cluster.isMaster) {
             version: '1.0.0',
         },
         },
-        apis: ['./src/*.js'], // 使用 glob 模式指定 API 文档位置
+        apis: ['./src/*.js', './src/SwaggerSpec.yaml'], // 使用 glob 模式指定 API 文档位置
     };
   
     // 创建 Swagger 文档对象

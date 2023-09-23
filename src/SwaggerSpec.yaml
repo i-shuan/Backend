@@ -1,0 +1,51 @@
+components:
+  requestBodies:
+    UserInput:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the user.
+                example: John Doe
+              age:
+                type: integer
+                description: The age of the user.
+                example: 30
+    OrderInput:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              orderId:
+                type: string
+                description: The ID of the order.
+                example: "12345"
+              amount:
+                type: number
+                description: The amount of the order.
+                example: 100.5
+  responses:
+    SuccessfulResponse:
+      description: Successful Response
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: "dbHostExample"
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+            example:
+              error: "An error message"
