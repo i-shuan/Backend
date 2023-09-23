@@ -24,7 +24,7 @@ const maskLine = (line) => {
     }
 };
 
-export const maskFileStream = async (stream) =>{
+export const MaskFileStream = async (stream) =>{
     const decodedStream = iconv.decodeStream("UTF-8");
     return stream
         .pipe(decodedStream)

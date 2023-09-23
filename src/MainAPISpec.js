@@ -13,8 +13,8 @@ import k8s from '@kubernetes/client-node';
 /* API Files */
 import ProcessFile from './API/ProcessFileToZIP.js';
 import ProcessTest from './API/ProcessTest.js'
-import MaskDownloadFile from './API/MaskDownloadFile.js'
 import ExtractFileFromZip from './API/ExtractFileFromZip.js';
+import MutiAPIFlow from './API/Utils/MutiAPIFlow.js';
 import {DownloadZipFromURL, ScanZipContent} from './API/DownloadFile/DownloadZip.js';
 import {DownloadFileAsStream} from './API/DownloadFile/DownloadFileAsStream.js';
 import {MaskFileStream} from './API/DownloadFile/MaskFileStream.js';
@@ -32,7 +32,7 @@ api.get('/k8s/namespaces', async (req, res) => {
   }
 });
 
-app.post('/get-zip-content', async (req, res) => {
+api.post('/get-zip-content', async (req, res) => {
   try {
       const zipUrl = 'https://example.com/path/to/your.zip';
       const zipBuffer = await DownloadZipFromURL(zipUrl);
@@ -44,6 +44,20 @@ app.post('/get-zip-content', async (req, res) => {
   } catch (error) {
       res.status(500).send('An error occurred while fetching the ZIP content.');
   }
+});
+
+
+api.post('/mutiApiFlow', async (req, res) => {
+ 
+  try {
+    const result = await MutiAPIFlow();
+    res.send(result);
+
+  } catch (err) {
+      console.error(err);
+      res.status(500).send({ error: err.message });
+  }
+ 
 });
 
 api.post('/test', async (req, res) => {
