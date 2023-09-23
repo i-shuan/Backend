@@ -26,6 +26,8 @@
     "jschardet": "^3.0.0",
     "node-schedule": "^2.1.1",
     "split2": "^4.2.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "unzipper": "^0.10.14"
   }
 }

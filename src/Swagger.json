@@ -1,0 +1,47 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/api/mutiApiFlow": {
+        "post": {
+          "summary": "Muti API Flow",
+          "description": "An API for executing multiple API flows.",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                    "example": "dbHostExample"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": {
+                    "error": "An error message"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
