@@ -15,6 +15,7 @@ import ProcessFile from './API/ProcessFileToZIP.js';
 import ProcessTest from './API/ProcessTest.js'
 import ExtractFileFromZip from './API/ExtractFileFromZip.js';
 import MutiAPIFlow from './API/Utils/MutiAPIFlow.js';
+import FlatObjApi from './API/Utils/FlatObjApi.js';
 import {DownloadZipFromURL, ScanZipContent} from './API/DownloadFile/DownloadZip.js';
 import {DownloadFileAsStream} from './API/DownloadFile/DownloadFileAsStream.js';
 import {MaskFileStream} from './API/DownloadFile/MaskFileStream.js';
@@ -65,6 +66,34 @@ api.post('/mutiApiFlow', async (req, res) => {
  
   try {
     const result = await MutiAPIFlow();
+    res.send(result);
+
+  } catch (err) {
+      console.error(err);
+      res.status(500).send({ error: err.message });
+  }
+ 
+});
+
+
+/**
+ * @swagger
+ * /api/flatObj:
+ *   post:
+ *     summary: Flat Obj
+ *     description: An API for Flatting Obj
+ *     requestBody:
+ *       $ref: "#/components/requestBodies/FlatObj"
+ *     responses:
+ *       200:
+ *         $ref: '#/components/responses/SuccessfulResponse'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+api.post('/flatObj', async (req, res) => {
+ 
+  try {
+    const result = await FlatObjApi();
     res.send(result);
 
   } catch (err) {

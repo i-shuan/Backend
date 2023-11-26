@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+spec:
+  template:
+    spec:
+      containers:
+      - name: nodejs-container
+        image: your-nodejs-app-image
+        envFrom:
+        - configMapRef:
+            name: nodejs-config

@@ -15,6 +15,17 @@ components:
                 type: integer
                 description: The age of the user.
                 example: 30
+    FlatObj:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              inputObj:
+                type: object
+                description: Input Obj
+                example: "{}" 
     OrderInput:
       required: true
       content:
