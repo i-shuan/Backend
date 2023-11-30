@@ -1,24 +1,31 @@
-public class DownloadRequestVO {
-    // 这里定义你的属性，确保它们与你的JSON结构相匹配
-    private String someField;
+public InputStreamResource callExternalService(ReqVo reqVo) {
+    HttpEntity<ReqVo> entity = new HttpEntity<>(reqVo, headers);
 
-    // getters 和 setters
-}
-@PostMapping("/api/download")
-public ResponseEntity<InputStreamResource> downloadFile(@RequestBody DownloadRequestVO downloadRequestVO) {
+    String url = genTKSProxyUrl(reqVo.getCluster(), reqVo.getFab());
+    
     RestTemplate restTemplate = new RestTemplate();
-    HttpHeaders headers = new HttpHeaders();
-    headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
-
-    HttpEntity<DownloadRequestVO> entity = new HttpEntity<>(downloadRequestVO, headers);
-
     ResponseEntity<InputStreamResource> response = restTemplate.exchange(
-            "http://node-js-service/download",
-            HttpMethod.POST,
-            entity,
-            InputStreamResource.class);
+        url, HttpMethod.POST, entity, InputStreamResource.class);
+    
+    return response.getBody();
+}
 
-    return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .body(response.getBody());
+@PostMapping(value = "/downloadFile", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+public ResponseEntity<InputStreamResource> downloadFile(@RequestBody DownloadFileVO downloadFileVO) {
+    try {
+        String fileName = extractFileName(downloadFileVO.getPath());
+
+        InputStreamResource inputStreamResource = callExternalService(downloadFileVO);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(inputStreamResource);
+    } catch (Exception e) {
+        // 處理異常...
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
